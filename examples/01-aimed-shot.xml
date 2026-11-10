@@ -1,0 +1,12 @@
+<?xml version="1.0" ?>
+<bulletml type="vertical">
+  <!-- One bullet aimed at the target every 20 frames. -->
+  <action label="top">
+    <repeat><times>9999</times>
+      <action>
+        <fire><direction type="aim">0</direction><speed>2.5</speed><bullet/></fire>
+        <wait>20</wait>
+      </action>
+    </repeat>
+  </action>
+</bulletml>

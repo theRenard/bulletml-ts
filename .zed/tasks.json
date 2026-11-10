@@ -1,0 +1,56 @@
+[
+  {
+    "label": "Install dependencies",
+    "command": "npm install",
+    "reveal": "always"
+  },
+  {
+    "label": "Playground: dev server",
+    "command": "npm run dev -- --open",
+    "use_new_terminal": true,
+    "allow_concurrent_runs": false,
+    "reveal": "always"
+  },
+  {
+    "label": "Test (once)",
+    "command": "npm test",
+    "reveal": "always"
+  },
+  {
+    "label": "Test (watch)",
+    "command": "npx vitest",
+    "use_new_terminal": true,
+    "reveal": "always"
+  },
+  {
+    "label": "Test current file",
+    "command": "npx vitest run \"$ZED_RELATIVE_FILE\"",
+    "reveal": "always"
+  },
+  {
+    "label": "Typecheck",
+    "command": "npm run typecheck",
+    "reveal": "always"
+  },
+  {
+    "label": "Build library",
+    "command": "npm run build",
+    "reveal": "always"
+  },
+  {
+    "label": "Build playground",
+    "command": "npm run build:playground",
+    "reveal": "always"
+  },
+  {
+    "label": "Preview built playground",
+    "command": "npm run build:playground && npm run preview -- --open",
+    "use_new_terminal": true,
+    "reveal": "always"
+  },
+  {
+    "label": "Check all (typecheck + test + build)",
+    "command": "npm run typecheck && npm test && npm run build",
+    "reveal": "always"
+  }
+]

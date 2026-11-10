@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<bulletml type="vertical">
+  <!-- $rand is a random value in [0,1): bullets fall in a random cone. -->
+  <action label="top">
+    <repeat><times>9999</times>
+      <action>
+        <fire>
+          <direction type="absolute">150+$rand*60</direction>
+          <speed>1+$rand*2</speed>
+          <bullet/>
+        </fire>
+        <wait>2</wait>
+      </action>
+    </repeat>
+  </action>
+</bulletml>

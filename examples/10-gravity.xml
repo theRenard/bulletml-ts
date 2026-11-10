@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<bulletml type="vertical">
+  <!-- accel pulls bullets downward like gravity. -->
+  <action label="top">
+    <repeat><times>9999</times>
+      <action>
+        <fire>
+          <direction type="absolute">-30+$rand*60</direction>
+          <speed>3+$rand*2</speed>
+          <bullet label="grav"/>
+        </fire>
+        <wait>4</wait>
+      </action>
+    </repeat>
+  </action>
+  <bullet label="grav">
+    <action>
+      <accel><vertical type="relative">0.1</vertical><term>9999</term></accel>
+    </action>
+  </bullet>
+</bulletml>

@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<bulletml type="vertical">
+  <!-- Bullets that explode into a ring after a delay (bullet with its own action, then vanish). -->
+  <action label="top">
+    <repeat><times>9999</times>
+      <action>
+        <fire><direction type="aim">0</direction><speed>2</speed><bullet label="bomb"/></fire>
+        <wait>90</wait>
+      </action>
+    </repeat>
+  </action>
+
+  <bullet label="bomb">
+    <action>
+      <wait>40</wait>
+      <fire><direction type="absolute">0</direction><speed>1.2</speed><bullet/></fire>
+      <repeat><times>11</times>
+        <action>
+          <fire><direction type="sequence">30</direction><speed>1.2</speed><bullet/></fire>
+        </action>
+      </repeat>
+      <vanish/>
+    </action>
+  </bullet>
+</bulletml>

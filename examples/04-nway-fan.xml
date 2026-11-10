@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<bulletml type="vertical">
+  <!-- Parameterised n-way fan aimed at the target: $1 = bullet count, $2 = spread in degrees. -->
+  <action label="top">
+    <repeat><times>9999</times>
+      <action>
+        <actionRef label="nway"><param>5</param><param>12</param></actionRef>
+        <wait>40</wait>
+      </action>
+    </repeat>
+  </action>
+
+  <action label="nway">
+    <fire>
+      <direction type="aim">-($1-1)*$2/2</direction>
+      <speed>2.5</speed>
+      <bullet/>
+    </fire>
+    <repeat><times>$1-1</times>
+      <action>
+        <fire><direction type="sequence">$2</direction><speed>2.5</speed><bullet/></fire>
+      </action>
+    </repeat>
+  </action>
+</bulletml>

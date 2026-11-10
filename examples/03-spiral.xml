@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<bulletml type="vertical">
+  <!-- Single-arm spiral: each shot is rotated 7 degrees from the previous one. -->
+  <action label="top">
+    <fire><direction type="absolute">0</direction><speed>2</speed><bullet/></fire>
+    <repeat><times>9999</times>
+      <action>
+        <wait>3</wait>
+        <fire><direction type="sequence">7</direction><speed>2</speed><bullet/></fire>
+      </action>
+    </repeat>
+  </action>
+</bulletml>

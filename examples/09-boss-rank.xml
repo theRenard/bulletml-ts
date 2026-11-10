@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<bulletml type="vertical">
+  <!-- Difficulty scaling: raise the runner rank (0..1) and the pattern gets faster and denser. -->
+  <action label="top">
+    <repeat><times>9999</times>
+      <action>
+        <actionRef label="arm"><param>0</param></actionRef>
+        <actionRef label="arm"><param>120</param></actionRef>
+        <actionRef label="arm"><param>240</param></actionRef>
+        <wait>12-$rank*8</wait>
+      </action>
+    </repeat>
+  </action>
+
+  <action label="arm">
+    <fire>
+      <direction type="sequence">$1+4</direction>
+      <speed>1.5+$rank*1.5</speed>
+      <bullet/>
+    </fire>
+  </action>
+</bulletml>

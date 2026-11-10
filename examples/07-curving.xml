@@ -1,0 +1,25 @@
+<?xml version="1.0" ?>
+<bulletml type="vertical">
+  <!-- Six bullets per wave that curve sideways (changeDirection with a sequence rate). -->
+  <action label="top">
+    <repeat><times>9999</times>
+      <action>
+        <repeat><times>6</times>
+          <action>
+            <fire>
+              <direction type="absolute">$loop.index*60</direction>
+              <bullet label="curve"/>
+            </fire>
+          </action>
+        </repeat>
+        <wait>30</wait>
+      </action>
+    </repeat>
+  </action>
+  <bullet label="curve">
+    <speed>2</speed>
+    <action>
+      <changeDirection><direction type="sequence">1.5</direction><term>9999</term></changeDirection>
+    </action>
+  </bullet>
+</bulletml>

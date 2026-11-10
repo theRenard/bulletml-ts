@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<bulletml type="vertical">
+  <!-- 24 bullets in a full circle, repeated. -->
+  <action label="top">
+    <repeat><times>9999</times>
+      <action>
+        <fire><direction type="absolute">0</direction><speed>1.5</speed><bullet/></fire>
+        <repeat><times>23</times>
+          <action>
+            <fire><direction type="sequence">15</direction><speed>1.5</speed><bullet/></fire>
+          </action>
+        </repeat>
+        <wait>45</wait>
+      </action>
+    </repeat>
+  </action>
+</bulletml>
