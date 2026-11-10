@@ -7,7 +7,7 @@
         <fire>
           <direction type="absolute">-30+$rand*60</direction>
           <speed>3+$rand*2</speed>
-          <bullet label="grav"/>
+          <bulletRef label="grav"/>
         </fire>
         <wait>4</wait>
       </action>

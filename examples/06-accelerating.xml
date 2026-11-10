@@ -4,7 +4,7 @@
   <action label="top">
     <repeat><times>9999</times>
       <action>
-        <fire><direction type="aim">0</direction><speed>0.5</speed><bullet label="fast"/></fire>
+        <fire><direction type="aim">0</direction><speed>0.5</speed><bulletRef label="fast"/></fire>
         <wait>10</wait>
       </action>
     </repeat>

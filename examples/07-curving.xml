@@ -8,7 +8,7 @@
           <action>
             <fire>
               <direction type="absolute">$loop.index*60</direction>
-              <bullet label="curve"/>
+              <bulletRef label="curve"/>
             </fire>
           </action>
         </repeat>
