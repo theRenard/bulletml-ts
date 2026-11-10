@@ -1,5 +1,12 @@
 # bulletml-ts
 
+[![CI](https://github.com/theRenard/bulletml-ts/actions/workflows/ci.yml/badge.svg)](https://github.com/theRenard/bulletml-ts/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+**[Try the playground](https://therenard.github.io/bulletml-ts/)**: edit a pattern, watch it run, export it to Lua.
+
+[![Playground screenshot](docs/playground.png)](https://therenard.github.io/bulletml-ts/)
+
 A TypeScript [BulletML](http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.html) parser and runner for danmaku (bullet hell) patterns.
 
 - Zero dependencies, no DOM required (Node, browsers, workers)
@@ -9,7 +16,7 @@ A TypeScript [BulletML](http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.ht
 - Safe expression evaluator (no `eval` / `new Function`)
 - Fast: about 10M bullet updates per second on a laptop (`npm run bench`)
 - Deterministic runs via an injectable random generator
-- [Playground](playground/) with live editing, stepping, rank slider and draggable aim target
+- [Playground](https://therenard.github.io/bulletml-ts/) ([source](playground/)) with live editing, stepping, rank slider and draggable aim target
 - [Examples](examples/): aimed shot, ring, spiral, n-way fan, rain, curving, splitting bombs, rank scaling, gravity
 
 Inspired by [daishihmr/bulletml.js](https://github.com/daishihmr/bulletml.js) (MIT). This is a clean rewrite with a different API.
