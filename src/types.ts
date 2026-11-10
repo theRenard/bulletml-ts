@@ -45,10 +45,14 @@ export interface Accel {
   term: Expr;
 }
 export interface Vanish { type: "vanish" }
+/** Assign `$variable` for the rest of the enclosing action. XML: `<bind variable="x">expr</bind>`. */
+export interface Bind { type: "bind"; variable: string; value: Expr }
+/** Tell the host game something happened. XML: `<notify event="x"><param>1</param></notify>`. */
+export interface Notify { type: "notify"; event: string; params: Expr[] }
 
 export type Command =
   | Action | ActionRef | Fire | FireRef | Repeat | Wait
-  | ChangeDirection | ChangeSpeed | Accel | Vanish;
+  | ChangeDirection | ChangeSpeed | Accel | Vanish | Bind | Notify;
 
 /** A parsed BulletML document. */
 export interface BulletML {

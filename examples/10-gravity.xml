@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <bulletml type="vertical">
-  <!-- accel pulls bullets downward like gravity. -->
+  <!-- accel with type="sequence" adds 0.1 to the vertical speed every frame: gravity. -->
   <action label="top">
     <repeat><times>9999</times>
       <action>
@@ -15,7 +15,7 @@
   </action>
   <bullet label="grav">
     <action>
-      <accel><vertical type="relative">0.1</vertical><term>9999</term></accel>
+      <accel><vertical type="sequence">0.1</vertical><term>9999</term></accel>
     </action>
   </bullet>
 </bulletml>

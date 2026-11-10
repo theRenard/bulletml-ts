@@ -46,6 +46,9 @@ export const changeDirection = (d: Direction, term: Expr): Command => ({ type: "
 export const changeSpeed = (s: Speed, term: Expr): Command => ({ type: "changeSpeed", speed: s, term });
 export const accel = (term: Expr, axes: { horizontal?: AccelValue; vertical?: AccelValue }): Command => ({ type: "accel", term, ...axes });
 
+export const bind = (variable: string, value: Expr): Command => ({ type: "bind", variable, value });
+export const notify = (event: string, ...params: Expr[]): Command => ({ type: "notify", event, params });
+
 export function bulletml(actions: Action[], extra: Partial<Omit<BulletML, "actions">> = {}): BulletML {
   return { orientation: "vertical", bullets: [], fires: [], ...extra, actions };
 }

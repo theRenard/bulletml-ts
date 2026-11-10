@@ -24,6 +24,8 @@ Actions labelled `top` (or `top1`, `top2`, ...) start running when the runner is
 | `<changeSpeed>` | Speed up or slow down over `<term>` frames |
 | `<accel>` | Add horizontal / vertical acceleration over `<term>` frames |
 | `<vanish/>` | Remove this bullet |
+| `<bind variable="x">expr</bind>` | *(extension)* Set `$x` for the rest of the action |
+| `<notify event="name"><param>..</param></notify>` | *(extension)* Call the host's `onNotify(runner, event, params)` |
 | `<actionRef>`, `<fireRef>`, `<bulletRef>` | Call something defined at the top level, with `<param>`s |
 
 ## Direction types

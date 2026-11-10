@@ -6,7 +6,7 @@ export interface Scope {
   rand: () => number;
 }
 
-type Node =
+export type Node =
   | { t: "num"; v: number }
   | { t: "var"; name: string }
   | { t: "neg"; a: Node }
@@ -15,7 +15,7 @@ type Node =
 const cache = new Map<string, Node>();
 
 /** Parse an expression (no `eval`/`Function`; only + - * / % ( ) numbers and `$vars`). */
-function parse(src: string): Node {
+export function parseExpression(src: string): Node {
   const hit = cache.get(src);
   if (hit) return hit;
   const re = /\s*(?:(\d+\.?\d*|\.\d+)|(\$[A-Za-z0-9_]+(?:\.[A-Za-z_]+)?)|(.))/gy;
@@ -95,5 +95,5 @@ export function evaluate(expr: Expr, scope: Scope): number {
   if (typeof expr === "number") return expr;
   const n = Number(expr);
   if (expr.trim() !== "" && !Number.isNaN(n)) return n;
-  return run(parse(expr), scope);
+  return run(parseExpression(expr), scope);
 }

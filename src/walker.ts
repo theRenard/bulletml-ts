@@ -18,7 +18,8 @@ export type Step =
   | { type: "changeDirection"; kind: DirectionKind; value: number; term: number }
   | { type: "changeSpeed"; kind: SpeedKind; value: number; term: number }
   | { type: "accel"; horizontal?: { kind: AccelKind; value: number }; vertical?: { kind: AccelKind; value: number }; term: number }
-  | { type: "vanish" };
+  | { type: "vanish" }
+  | { type: "notify"; event: string; params: number[] };
 
 export interface ResolvedBullet {
   label?: string;
@@ -29,7 +30,8 @@ export interface ResolvedBullet {
 }
 
 /** Walk a list of commands, yielding resolved steps. Control flow (repeat, refs) is handled here. */
-export function* walk(ctx: WalkContext, commands: readonly Command[], vars: Vars): Generator<Step, void, void> {
+export function* walk(ctx: WalkContext, commands: readonly Command[], initialVars: Vars): Generator<Step, void, void> {
+  let vars = initialVars;
   const num = (e: Expr, v: Vars) => evaluate(e, { vars: v, rand: ctx.rand } satisfies Scope);
   const find = <T extends { label?: string }>(list: T[], label: string, what: string): T => {
     const hit = list.find((x) => x.label === label);
@@ -50,15 +52,15 @@ export function* walk(ctx: WalkContext, commands: readonly Command[], vars: Vars
       f.bullet.params.forEach((p, i) => { out[`$${i + 1}`] = num(p, v); });
       bv = f.bullet.params.length ? out : v;
     } else b = f.bullet;
-    const dir = (d?: { kind: DirectionKind; value: Expr }) => d && { kind: d.kind, value: num(d.value, v) };
-    const spd = (s?: { kind: SpeedKind; value: Expr }) => s && { kind: s.kind, value: num(s.value, v) };
+    const dir = (d: { kind: DirectionKind; value: Expr } | undefined, sc: Vars) => d && { kind: d.kind, value: num(d.value, sc) };
+    const spd = (s: { kind: SpeedKind; value: Expr } | undefined, sc: Vars) => s && { kind: s.kind, value: num(s.value, sc) };
     const rb: ResolvedBullet = { actions: b.actions, vars: bv };
     if (b.label) rb.label = b.label;
-    const bd = dir(b.direction), bs = spd(b.speed);
+    const bd = dir(b.direction, bv), bs = spd(b.speed, bv);
     if (bd) rb.direction = bd;
     if (bs) rb.speed = bs;
     const step: Step = { type: "fire", bullet: rb };
-    const fd = dir(f.direction), fs = spd(f.speed);
+    const fd = dir(f.direction, v), fs = spd(f.speed, v);
     if (fd) step.direction = fd;
     if (fs) step.speed = fs;
     return step;
@@ -111,6 +113,14 @@ export function* walk(ctx: WalkContext, commands: readonly Command[], vars: Vars
       case "vanish":
         yield { type: "vanish" };
         break;
+      case "bind":
+        vars = { ...vars, [`$${cmd.variable}`]: num(cmd.value, vars) };
+        break;
+      case "notify": {
+        const snapshot = vars;
+        yield { type: "notify", event: cmd.event, params: cmd.params.map((p) => num(p, snapshot)) };
+        break;
+      }
     }
   }
 }

@@ -17,6 +17,7 @@
     <label>Rank <input id="rank" type="range" min="0" max="1" step="0.05" value="0" /></label>
     <label>Seed <input id="seed" type="number" value="1" /></label>
     <button id="share">Copy share link</button>
+    <button id="lua">Export Lua…</button>
   </header>
   <main>
     <section class="stage">
@@ -25,10 +26,26 @@
       <p class="hint">Drag on the canvas to move the target the pattern aims at.</p>
     </section>
     <section class="editor">
-      <textarea id="editor" spellcheck="false" aria-label="BulletML source"></textarea>
+      <div id="editor" aria-label="BulletML source"></div>
       <pre id="error" role="alert"></pre>
     </section>
   </main>
+  <dialog id="luaDialog">
+    <form method="dialog" class="luaHead">
+      <strong>Export to Lua</strong>
+      <label>Target
+        <select id="luaTarget">
+          <option value="pico8">PICO-8</option>
+          <option value="lua">Plain Lua / LÖVE</option>
+        </select>
+      </label>
+      <label><input id="luaRuntime" type="checkbox" checked /> include runtime</label>
+      <button type="button" id="luaCopy">Copy</button>
+      <button type="button" id="luaDownload">Download .lua</button>
+      <button>Close</button>
+    </form>
+    <textarea id="luaOut" readonly spellcheck="false"></textarea>
+  </dialog>
   <script type="module" src="./src/main.ts"></script>
 </body>
 </html>

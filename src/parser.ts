@@ -40,6 +40,18 @@ function action(el: XmlElement): Action {
       case "fireref": commands.push({ type: "fireRef", label: label(c) ?? "", params: params(c) }); break;
       case "wait": commands.push({ type: "wait", frames: txt(c) }); break;
       case "vanish": commands.push({ type: "vanish" }); break;
+      case "bind": {
+        const variable = (c.attrs["variable"] ?? "").replace(/^\$/, "");
+        if (!/^[A-Za-z_]\w*$/.test(variable)) throw new Error("<bind> needs a valid variable name");
+        commands.push({ type: "bind", variable, value: txt(c) });
+        break;
+      }
+      case "notify": {
+        const event = c.attrs["event"];
+        if (!event) throw new Error("<notify> needs an event attribute");
+        commands.push({ type: "notify", event, params: params(c) });
+        break;
+      }
       case "repeat": {
         const a = kids(c, "action", "actionref")[0];
         if (!a) throw new Error("<repeat> has no action");

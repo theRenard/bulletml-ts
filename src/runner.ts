@@ -16,6 +16,8 @@ export interface RunnerOptions {
   onFire?: (bullet: Runner, info: { label?: string }) => void;
   /** Called when a runner executes `<vanish/>`. */
   onVanish?: (runner: Runner) => void;
+  /** Called for `<notify event="...">`. Use it for sounds, spawning enemies, phase changes... */
+  onNotify?: (runner: Runner, event: string, params: number[]) => void;
 }
 
 interface Thread {
@@ -116,6 +118,7 @@ export class Runner {
         case "changeDirection": this.changeDirection(s); break;
         case "changeSpeed": this.changeSpeed(s); break;
         case "accel": this.accel(s); break;
+        case "notify": this.opts.onNotify?.(this, s.event, s.params); break;
         case "vanish":
           this.vanished = true;
           this.opts.onVanish?.(this);
@@ -199,6 +202,7 @@ export class Runner {
     const axis = (a: { kind: string; value: number } | undefined, cur: number): [number, number] => {
       if (!a) return [0, cur];
       if (a.kind === "relative") return [a.value / term, cur + a.value];
+      if (a.kind === "sequence") return [a.value, cur + a.value * term];
       return [(a.value - cur) / term, a.value];
     };
     [this.aclIncrH, this.aclFinH] = axis(s.horizontal, this.speedH);

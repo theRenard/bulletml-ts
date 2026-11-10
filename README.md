@@ -4,7 +4,10 @@ A TypeScript [BulletML](http://www.asahi-net.or.jp/~cs8k-cyu/bulletml/index_e.ht
 
 - Zero dependencies, no DOM required (Node, browsers, workers)
 - Fully typed document model; ESM + CJS builds
+- **Export to Lua** (PICO-8 and plain Lua/LÖVE), see [docs/LUA.md](docs/LUA.md)
+- `bind` and `notify` extensions for variables and game events
 - Safe expression evaluator (no `eval` / `new Function`)
+- Fast: about 10M bullet updates per second on a laptop (`npm run bench`)
 - Deterministic runs via an injectable random generator
 - [Playground](playground/) with live editing, stepping, rank slider and draggable aim target
 - [Examples](examples/): aimed shot, ring, spiral, n-way fan, rain, curving, splitting bombs, rank scaling, gravity
@@ -50,7 +53,9 @@ The playground is deployed to GitHub Pages by `.github/workflows/pages.yml`.
 ## Differences from bulletml.js
 
 - New API (`parseBulletML` / `createRunner`), plain-object document model
-- XML or the typed builder helpers (no JSON loader or `notify` / `bind` yet)
+- XML or the typed builder helpers (no JSON loader)
+- `<bind variable="x">expr</bind>` and `<notify event="name"><param>..</param></notify>` are available in XML too
+- `accel` with `type="sequence"` adds the value every frame, as in the BulletML spec
 - `horizontal` orientation is honoured
 - A vanished runner stops immediately
 

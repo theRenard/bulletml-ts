@@ -1,4 +1,7 @@
-import { createRunner, parseBulletML, type Runner } from "../../src/index.js";
+import { EditorView, basicSetup } from "codemirror";
+import { xml } from "@codemirror/lang-xml";
+import { oneDark } from "@codemirror/theme-one-dark";
+import { createRunner, parseBulletML, toLua, type Runner } from "../../src/index.js";
 
 const files = import.meta.glob("../../examples/*.xml", { query: "?raw", import: "default", eager: true }) as Record<string, string>;
 const examples = Object.entries(files)
@@ -8,7 +11,27 @@ const examples = Object.entries(files)
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 const canvas = $<HTMLCanvasElement>("canvas");
 const ctx = canvas.getContext("2d")!;
-const editor = $<HTMLTextAreaElement>("editor");
+let debounce = 0;
+const view = new EditorView({
+  parent: $("editor"),
+  extensions: [
+    basicSetup,
+    xml(),
+    oneDark,
+    EditorView.updateListener.of((u) => {
+      if (u.docChanged && !loading) { clearTimeout(debounce); debounce = window.setTimeout(reset, 300); }
+    }),
+  ],
+});
+let loading = false;
+const editor = {
+  get value() { return view.state.doc.toString(); },
+  set value(v: string) {
+    loading = true;
+    view.dispatch({ changes: { from: 0, to: view.state.doc.length, insert: v } });
+    loading = false;
+  },
+};
 const errorBox = $("error");
 const select = $<HTMLSelectElement>("examples");
 const playBtn = $<HTMLButtonElement>("play");
@@ -103,11 +126,6 @@ playBtn.onclick = () => { playing = !playing; playBtn.textContent = playing ? "P
 $("step").onclick = () => { playing = false; playBtn.textContent = "Play"; tick(); };
 $("reset").onclick = reset;
 rankInput.onchange = seedInput.onchange = reset;
-let debounce = 0;
-editor.oninput = () => { clearTimeout(debounce); debounce = window.setTimeout(reset, 300); };
-editor.onkeydown = (e) => {
-  if (e.key === "Tab") { e.preventDefault(); document.execCommand("insertText", false, "  "); }
-};
 
 const move = (e: PointerEvent) => {
   const r = canvas.getBoundingClientRect();
@@ -126,6 +144,33 @@ $("share").onclick = async () => {
   await navigator.clipboard?.writeText(url).catch(() => {});
   $("share").textContent = "Copied!";
   setTimeout(() => ($("share").textContent = "Copy share link"), 1200);
+};
+
+// --- Lua export ---
+const luaDialog = $<HTMLDialogElement>("luaDialog");
+const luaOut = $<HTMLTextAreaElement>("luaOut");
+const luaTarget = $<HTMLSelectElement>("luaTarget");
+const luaRuntime = $<HTMLInputElement>("luaRuntime");
+function renderLua(): void {
+  try {
+    luaOut.value = toLua(parseBulletML(editor.value), {
+      target: luaTarget.value as "lua" | "pico8",
+      name: select.value.replace(/^\d+-/, "").replace(/\W/g, "_") || "pattern",
+      runtime: luaRuntime.checked,
+    });
+  } catch (e) {
+    luaOut.value = "-- " + (e instanceof Error ? e.message : String(e));
+  }
+}
+$("lua").onclick = () => { renderLua(); luaDialog.showModal(); };
+luaTarget.onchange = luaRuntime.onchange = renderLua;
+$("luaCopy").onclick = () => navigator.clipboard?.writeText(luaOut.value);
+$("luaDownload").onclick = () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([luaOut.value], { type: "text/plain" }));
+  a.download = `${select.value || "pattern"}.lua`;
+  a.click();
+  URL.revokeObjectURL(a.href);
 };
 
 let initial = examples[0]?.src ?? "";
